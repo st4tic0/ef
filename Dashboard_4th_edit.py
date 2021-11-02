@@ -17,9 +17,7 @@ import pandas as pd
 import numpy as np
 
 # Data Viz Packages
-import matplotlib
 from plotly.subplots import make_subplots
-matplotlib.use('Agg')
 import plotly.express as px
 import plotly.graph_objs as go
 #import matplotlib.pyplot as plt
