@@ -44,7 +44,7 @@ img_sidebar[1].image(img,width=100)
 ############################################################################################################################################################################################################
 
 #################### PRODUCTION DATA ####################
-prod = pd.read_csv('Data\Production Data.csv')
+prod = pd.read_csv('Data/Production Data.csv')
 prod = prod.loc[:, ~prod.columns.str.contains('^Unnamed')]
 prod.columns = [x.lower() for x in prod.columns]
 prod['fecha'] = pd.to_datetime(prod['fecha'])
@@ -52,13 +52,13 @@ prod['lat'] = prod['lat'].astype(float)
 prod['lon'] = prod['lon'].astype(float)
 
 #################### PRESSURE DATA ####################
-press = pd.read_csv('Data\Pressure Data.csv')
+press = pd.read_csv('Data/Pressure Data.csv')
 press = press.loc[:, ~press.columns.str.contains('^Unnamed')]
 press.columns = [x.lower() for x in press.columns]
 press['fecha'] = pd.to_datetime(press['fecha'])
 
 #################### SALINITY DATA ####################
-salt = pd.read_csv('Data\Salinity.csv')
+salt = pd.read_csv('Data/Salinity.csv')
 salt = salt.loc[:, ~salt.columns.str.contains('^Unnamed')]
 salt.columns = [x.lower() for x in salt.columns]
 salt = salt.fillna(0)
@@ -71,7 +71,7 @@ salt = salt[salt.salinidad >= 1]
 salt = salt[salt.water_cut >= 1]
 
 #################### TOPS DEPTH ####################
-tops = pd.read_csv('Data\TOPS.csv')
+tops = pd.read_csv('Data/TOPS.csv')
 tops = tops.loc[:, ~tops.columns.str.contains('^Unnamed')]
 tops.columns = [x.lower() for x in tops.columns]
 
@@ -757,59 +757,59 @@ with st.expander('GIS Maps and 3D Plots'):
     if GIS_map_selector == 'None':
         st.write(' ')
     if GIS_map_selector == 'Location':
-        st.image('Maps\loc.png') 
+        st.image('Maps/loc.png') 
     if GIS_map_selector == 'Sitio Grande Map':
-        st.image('Maps\SG.png')
+        st.image('Maps/SG.png')
     if GIS_map_selector == 'Production Lifespan':
-        st.image('Maps\lifespan.png')
+        st.image('Maps/lifespan.png')
     if GIS_map_selector == 'SG Wells MD':
-        st.image('Maps\depth.png')
+        st.image('Maps/depth.png')
     if GIS_map_selector == 'Last Production':
-        st.image('Maps\last prod.png')
+        st.image('Maps/last prod.png')
     if GIS_map_selector == 'Current Water Cut':
-        st.image('Maps\water cut.png')
+        st.image('Maps/water cut.png')
     if GIS_map_selector == 'Initial Production':
         st.image('Maps\initial prod.png')
     if GIS_map_selector == 'Acummulated Production':
-        st.image('Maps\cum.png')
+        st.image('Maps/cum.png')
     if GIS_map_selector == 'Acummulated Production (%)':
-        st.image('Maps\cum percent.png')
+        st.image('Maps/cum percent.png')
     if GIS_map_selector == 'Acummulated Production (%) - (2)':
-        st.image('Maps\cum percent 2.png')
+        st.image('Maps/cum percent 2.png')
     if GIS_map_selector == 'Acummulated Production (%) - (2)':
-        st.image('Maps\cum percent 2.png')
+        st.image('Maps/cum percent 2.png')
     if GIS_map_selector == 'Yearly Production (MMBLS)':
-        st.image('Maps\yearly.png')
+        st.image('Maps/yearly.png')
     if GIS_map_selector == 'Mud Loss':
-        st.image('Maps\mud loss.png')
+        st.image('Maps/mud loss.png')
     if GIS_map_selector == 'Water Injection':
-        st.image('Maps\water in.png')
+        st.image('Maps/water in.png')
     if GIS_map_selector == 'Water Injection - Zone A':
-        st.image('Maps\water in - A.png')
+        st.image('Maps/water in - A.png')
     if GIS_map_selector == 'Water Injection - Zone B':
         st.image('Maps\water in - B.png')
     if GIS_map_selector == 'Water Injection - Zone C':
-        st.image('Maps\water in - C.png')
+        st.image('Maps/water in - C.png')
     if GIS_map_selector == 'Water Injection - Zone D':
-        st.image('Maps\water in - D.png')  
+        st.image('Maps/water in - D.png')  
     if GIS_map_selector == 'Thickness KM-A':
-        st.image('Maps\kma_1.png')
+        st.image('Maps/kma_1.png')
     if GIS_map_selector == 'Thickness KM-A (2)':
-        st.image('Maps\kma_2.png')
+        st.image('Maps/kma_2.png')
     if GIS_map_selector == 'Thickness KMA-KMB':
-        st.image('Maps\kma-kmb.png')
+        st.image('Maps/kma-kmb.png')
     if GIS_map_selector == 'Thickness KMB-KMC':
-        st.image('Maps\kmb-kmc.png')
+        st.image('Maps/kmb-kmc.png')
     if GIS_map_selector == 'Thickness KMC-KMD':
-        st.image('Maps\kmc-kmd.png')
+        st.image('Maps/kmc-kmd.png')
     if GIS_map_selector == 'Thickness KMD-KS2':
-        st.image('Maps\kmd-ks2.png')
+        st.image('Maps/kmd-ks2.png')
     if GIS_map_selector == 'Thickness KS2-KS3':
-        st.image('Maps\ks2-ks3.png')
+        st.image('Maps/ks2-ks3.png')
     if GIS_map_selector == 'Thickness KS3-KSF':
-        st.image('Maps\ks3-ksf.png')
+        st.image('Maps/ks3-ksf.png')
     if GIS_map_selector == 'Thickness KSF-KSMEN':
-        st.image('Maps\ksf-ksmen.png')
+        st.image('Maps/ksf-ksmen.png')
         
     st.subheader('3D Plots')
     
