@@ -103,8 +103,8 @@ with st.sidebar.expander('Declination Curve Analytics'):
 #################### MAPA Y TABLA ####################
 
 coords = prod[['campo','terminacion','lat', 'lon']]
-coords['lat'] = coords['lat'].astype(int)
-coords['lon'] = coords['lon'].astype(int)
+coords['lat'] = coords['lat'].astype(float)
+coords['lon'] = coords['lon'].astype(float)
 coords = coords.dropna()
 
 for_map = pozo.copy()
