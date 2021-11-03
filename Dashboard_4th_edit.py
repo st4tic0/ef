@@ -32,7 +32,7 @@ import plotly.graph_objs as go
 
 #################### PAGE CONFIG ####################
 APP_TITLE = "IPS Dashboard"
-img=Image.open('https://github.com/victorresc9/IPS_DASHBOARD/tree/main/Imagenes/IPS.png')
+img=Image.open('https://github.com/victorresc9/IPS_DASHBOARD/blob/main/Imagenes/IPS.png')
 st.set_page_config(
     page_title = APP_TITLE,
     page_icon = img,
