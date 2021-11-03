@@ -78,7 +78,7 @@ tops.columns = [x.lower() for x in tops.columns]
 ############################################################################################################################################################################################################
 
 #################### SIDEBAR ELEMENT 2 - DATA FILTER/SELECTORS ####################
-with st.sidebar.expander('Well Selector'):
+with st.sidebar.expander('Field / Well Selector'):
     campos = prod['campo'].unique()
     filt_campos = st.selectbox('Select an oilfield', campos)
     
@@ -481,6 +481,69 @@ with st.expander('Production Data Plots'):
         cols0[1].plotly_chart(press_3)
     if press_plot_selector == 'Well Pressure (Kg/cm3)':
         cols0[1].plotly_chart(press_4)
+############################################################################################################################################################################################################
+
+with st.expander('Declination Curve Analysis'):
+    st.write(' ')
+    dec_curve = make_subplots(specs=[[{"secondary_y": True}]])
+
+    dec_curve.add_trace(go.Scatter(x=pozo['fecha'], y=pozo['aceite_bpd'], mode='markers', marker_symbol = 'diamond', marker_line_width=.5, marker=dict(size=5,color='green'),name='ACEITE'), secondary_y=False)
+    dec_curve.add_trace(go.Scatter(x=pozo['fecha'], y=pozo['gas_cmpd'], mode='markers', marker_line_width=.5, marker=dict(size=4,color='red'), name='GAS'),secondary_y=True)
+    dec_curve.add_trace(go.Scatter(x=pozo['fecha'], y=pozo['agua_bpd'], mode='markers', marker_symbol = 'triangle-up', marker_line_width=.5, marker=dict(size=4,color='blue'),name='WATER CUT'), secondary_y=False)
+    
+    dec_curve.add_trace(go.Scatter(x=pozo_2.index, y=pozo_2['Open'], mode='markers', marker_line_width=.5, marker=dict(size=5,color='purple'), name='Open'), secondary_y=False)
+    dec_curve.add_trace(go.Scatter(x=pozo_2.index, y=pozo_2['Open_Interval'], mode='markers', marker_line_width=.5, marker=dict(size=5,color='orange'),name='Open Interval'), secondary_y=False)
+    dec_curve.add_trace(go.Scatter(x=pozo_2.index, y=pozo_2['Reentry'], mode='markers', marker_line_width=.5, marker=dict(size=5,color='cyan'), name='Reentry'),secondary_y=False)
+    
+    dec_curve.add_trace(go.Scatter(x=pozo['fecha'], y=pozo['Historical trend'], mode='markers', marker_line_width=.5, marker=dict(size=2,color='black'), name='Trend'), secondary_y=False)
+
+    dec_curve.update_layout(hovermode="x unified", width=1000)
+    dec_curve.update_xaxes(title_text="Año")
+    dec_curve.update_layout(legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
+    # Set y-axes titles
+    dec_curve.update_layout(yaxis1=dict(type='log'))
+    # update
+    dec_curve.update_yaxes(title_text="<b>Oil [bbl/d] / Water Production [bbl/d]</b> ", secondary_y=False)
+    dec_curve.update_yaxes(title_text="<b>Gas Production Rate [Cubic Meters per Day] </b>", secondary_y=True)
+    dec_curve.update_yaxes(nticks=25,secondary_y=False)
+    dec_curve.update_yaxes(nticks=25,secondary_y=True)
+    dec_curve.update_xaxes(nticks=10)
+
+    st.plotly_chart(dec_curve)
+    
+    col1,col2,col3 = st.columns(3)
+
+with col1:
+    col1.subheader("Re-open well")
+    pozo_3.reset_index(drop=True, inplace=True)
+    pozo_3['CAPEX'] = 0
+    pozo_3.at[0,'CAPEX']= capex
+    pozo_3['Cost'] = pozo_3['Revenue_Open'] - pozo_3['CAPEX']
+    pozo_3['SumCost']=pozo_3['Cost'].cumsum()
+    st.dataframe(pozo_3.style.format({"Revenue_Open": "{:,.0f}", "Revenue_Open_Interval": "{:,.0f}", "Revenue_Reentry": "{:,.0f}","Yr": "{:,.2f}","Open_monthly": "{:,.0f}","Open_Interval": "{:,.0f}","Reentry": "{:,.0f}"}))
+    st.caption('Cum barrels: ' + str(round((pozo_3['Open_monthly'].sum()/MM),2)) + ' MMBO')
+    st.caption('Cum Gross Revenue: ' + str(round((pozo_3['Revenue_Open'].sum()/MM),2)) + ' MM USD')
+    if opening:
+        net = (pozo_3['Revenue_Open'].sum()- capex)
+        st.caption('Net Revenue: ' + str(round(net/MM,2)) + ' MM USD')
+with col2:
+    col2.subheader("Open a New Interval")
+    st.dataframe(pozo_4.style.format({"Revenue_Open": "{:,.0f}", "Revenue_Open_Interval": "{:,.0f}", "Revenue_Reentry": "{:,.0f}","Yr": "{:,.2f}","Open": "{:,.0f}","Open_Interval_monthly": "{:,.0f}","Reentry": "{:,.0f}"}))
+#st.dataframe(data5.style.format({"Revenue_Open": "{:,.0f}", "Revenue_Open_Interval": "{:,.0f}", "Revenue_Reentry": "{:,.0f}","Yr": "{:,.2f}","Open": "{:,.0f}","Open_Interval": "{:,.0f}","Reentry": "{:,.0f}"}))
+    st.caption('Cum barrels: ' + str(round((pozo_4['Open_Interval_monthly'].sum()/MM),2)) + ' MMBO')
+    st.caption('Cum Gross Revenue: ' + str(round((pozo_4['Revenue_Open_Interval'].sum()/MM),2)) + ' USD')
+    if interval:
+        net = (pozo_4['Revenue_Open_Interval'].sum()- capex)
+        st.caption('Net Revenue: ' + str(round(net/MM,2)) + ' MM USD')
+with col3:
+    col3.subheader("Re-Entry")
+    st.dataframe(pozo_5.style.format({"Revenue_Open": "{:,.0f}", "Revenue_Open_Interval": "{:,.0f}", "Revenue_Reentry": "{:,.0f}","Yr": "{:,.2f}","Open": "{:,.0f}","Open_Interval": "{:,.0f}","Reentry_monthly": "{:,.0f}"}))
+    st.caption('Cum barrels: ' + str(round((pozo_5['Reentry_monthly'].sum()/MM),2)) + ' MMBO')
+    st.caption('Cum Gross Revenue: ' + str(round((pozo_5['Revenue_Reentry'].sum()/MM),2)) + ' USD')
+    if reentry:
+        net = (pozo_5['Revenue_Reentry'].sum()- capex)
+        st.caption('Net Revenue: ' + str(round(net/MM,2)) + ' MM USD')
+    
 
 ############################################################################################################################################################################################################
 with st.expander('Water Control Diagnostic Plots'):
